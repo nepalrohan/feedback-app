@@ -13,6 +13,7 @@ import  MessageCard  from '@/components/MessageCard';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
+import { User } from 'next-auth';
 const Page = () => {
 
 const [messages, setMessages] = useState<Message[]>([]);
@@ -121,6 +122,20 @@ const handleSwitchChange = async ()=>{
 if(!session || !session.user){
   return <div>Please login</div>
 }
+
+
+const { username } = session.user as User;
+
+const baseUrl = `${window.location.protocol}//${window.location.host}`;
+const profileUrl = `${baseUrl}/u/${username}`;
+
+const copyToClipboard = () => {
+  navigator.clipboard.writeText(profileUrl);
+  toast({
+    title: 'URL Copied!',
+    description: 'Profile URL has been copied to clipboard.',
+  });
+};
 
   return (
     <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
